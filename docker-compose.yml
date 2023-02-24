@@ -1,22 +1,23 @@
 version: '3'
-
 services:
-  app:
-    image: node:alpine
-    expose:
-      - 3001
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    working_dir: /app
-    depends_on:
-      - postgres
-    environment:
-      NODE_ENV: development
-      ACCESS_TOKEN_SECRET: chnirt1803
-    ports:
-      - 3001:3001
-    command: npm run start:prod
+
+  api-prod:
+      container_name: nestjs_api_prod
+      image: nestjs-api-prod:1.0.0
+      build: .
+      environment:
+        - NODE_ENV=production
+        - DB_HOST=postgres
+        - DB_PORT=5432
+        - DB_USERNAME=postgres
+        - DB_PASSWORD=postgres
+      ports:
+        - 3001:3001
+      depends_on:
+        - postgres
+      restart: unless-stopped
+
+
   postgres:
     image: postgres:12.2
     container_name: API_graphql_postgres
@@ -25,7 +26,23 @@ services:
       - database.env
     ports:
       - 5432:5432
+    expose:
+      - 5432
     volumes:
       - api_data:/data/postgres
+
+  # pgadmin:
+  #  container_name: pgadmin4_container
+  #  image: dpage/pgadmin4:5.5
+  #  restart: always
+  #  environment:
+  #    PGADMIN_DEFAULT_EMAIL: admin@admin.com
+  #    PGADMIN_DEFAULT_PASSWORD: secret
+  #    PGADMIN_LISTEN_PORT: 80
+  #  ports:
+  #    - "8080:80"
+  #  volumes:
+  #    - pgadmin-data:/var/lib/pgadmin
 volumes:
   api_data:
+  pgadmin-data:

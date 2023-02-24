@@ -1,14 +1,17 @@
-FROM node:18.14.2
+FROM node:latest AS builder
+WORKDIR /workdir
+COPY . /workdir
+RUN yarn install
+RUN yarn build
 
-# Set working dir in the container to /
-WORKDIR /app
-
-# Copy application to /app directory and install dependencies
-COPY package.json ./app
-RUN npm install
-COPY . .
-# Expose port 8081 to the outside once the container has launched
+# run
+FROM node:latest
+WORKDIR /workdir
+ENV NODE_ENV production
+COPY --from=builder /workdir/dist /workdir
+COPY --from=builder /workdir/package.json /workdir
+COPY --from=builder /workdir/yarn.lock /workdir
+RUN yarn install --prod
 EXPOSE 3001
+CMD ["node", "main.js"]
 
-# what should be executed when the Docker image is launching
-CMD "npm run start:prod"
