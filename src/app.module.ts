@@ -14,7 +14,9 @@ import { GraphQLConfigService } from './config/graphql';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-     ...GraphQLConfigService
+     ...GraphQLConfigService,
+     introspection: true,
+      playground: true,
     }),
     // TypeOrmModule.forRoot({...PostgresDataSource, autoLoadEntities:true}), UserModule, AuthModule],
     TypeOrmModule.forRootAsync({
