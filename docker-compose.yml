@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  app:
+    image: node:alpine
+    expose:
+      - 3001
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    working_dir: /app
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: development
+      ACCESS_TOKEN_SECRET: chnirt1803
+    ports:
+      - 3001:3001
+    command: npm run start:prod
+  postgres:
+    image: postgres:12.2
+    container_name: API_graphql_postgres
+    restart: unless-stopped
+    env_file:
+      - database.env
+    ports:
+      - 5432:5432
+    volumes:
+      - api_data:/data/postgres
+volumes:
+  api_data:
