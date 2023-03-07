@@ -42,3 +42,19 @@ Optionally use unicode instead of [gitmoji](https://gitmoji.dev/) by editing the
 }
 
 ```
+
+## Uniformisation de la configuration editeur
+
+Ajouter l'extension VSCode editorconfig et creer un fichier ```.editorconfig ```
+
+```yml
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+```
