@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { constant } from 'src/common/constant';
 import { UserEntity } from 'src/user/models/user.model';
 import { Not, Repository } from 'typeorm';
-import { CreateUser } from './dto/createUser';
+import { CreateUserInput, CreateUserOutput } from './dto/createUser';
 import { FindAllUserData } from './dto/findAllResponseDTO';
 import {
   BadGatewayException,
@@ -25,7 +25,7 @@ export class UserService {
   ) {}
 
   // user register functionality
-  async createUser(createObj: CreateUser): Promise<UserEntity> {
+  async createUser(createObj: CreateUserInput): Promise<CreateUserOutput> {
     const { Name, Email, Password } = createObj;
     const lowerEmail = Email.toLowerCase();
     const findOneData = await this.userRepository.findOne({
@@ -36,7 +36,7 @@ export class UserService {
       throw new BadRequestException(constant.USER_ALREADY_EXIST);
     }
     const hashPasswordValue = await hashPassword(Password);
-    const dataObject: CreateUser = {
+    const dataObject: CreateUserInput = {
       Name,
       Email: lowerEmail,
       Password: hashPasswordValue,
@@ -74,10 +74,13 @@ export class UserService {
     return { Token: `Bearer ${getToken}` };
   }
 
-  findAllUserData(ID: number): Promise<FindAllUserData[]> {
+ async findAllUserData(): Promise<FindAllUserData[]> {
     return this.userRepository.find({
-      where: { ID: Not(ID) },
       select: ['ID', 'Name', 'Email'],
     });
+  }
+
+  async getUser(email : string ): Promise<UserEntity>{
+    return this.userRepository.findOneBy({Email :email});
   }
 }

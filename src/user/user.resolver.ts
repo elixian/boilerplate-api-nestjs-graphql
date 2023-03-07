@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
 import { UserEntity } from 'src/user/models/user.model';
-import { CreateUser } from './dto/createUser';
+import { CreateUserInput, CreateUserOutput } from './dto/createUser';
 import { findAllResponseDTO, FindAllUserData } from './dto/findAllResponseDTO';
 import { JWTMiddlewareDTO } from './dto/middle-ware';
 import { Token } from './dto/token';
@@ -12,10 +12,10 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   // user register functionality
-  @Mutation(() => UserEntity)
+  @Mutation(() => CreateUserOutput)
   createUser(
-    @Args('UserCreateObject') userCreateObject: CreateUser,
-  ): Promise<UserEntity> {
+    @Args('UserCreateObject') userCreateObject: CreateUserInput,
+  ): Promise<CreateUserOutput> {
     return this.userService.createUser(userCreateObject);
   }
 
@@ -40,4 +40,16 @@ export class UserResolver {
   //   };
   //   return data;
   // }
+
+  @Query(() => findAllResponseDTO)
+  async findAllUserData(): Promise<{
+    AllUserData: FindAllUserData[];
+  }> {
+    const data = {
+      AllUserData: await this.userService.findAllUserData(),
+    };
+    console.log("🚀 ~ file: user.resolver.ts:51 ~ UserResolver ~ findAllUserData ~ data:", data)
+    return data;
+  }
+
 }

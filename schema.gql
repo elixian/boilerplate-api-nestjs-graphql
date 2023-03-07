@@ -2,19 +2,27 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UserEntity {
-  ID: Int!
-  DateCreated: DateTime!
-  DateUpdated: DateTime!
+type CreateUserOutput {
   Name: String!
   Email: String!
-  Password: String!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+type JWTMiddlewareDTO {
+  ID: Int!
+  Name: String!
+  Email: String!
+}
+
+type FindAllUserData {
+  ID: ID!
+  Name: String!
+  Email: String!
+}
+
+type findAllResponseDTO {
+  AllUserData: [FindAllUserData!]!
+  CurrentUser: JWTMiddlewareDTO!
+}
 
 type Token {
   Token: String!
@@ -22,13 +30,14 @@ type Token {
 
 type Query {
   userLogin(Email: String!, Password: String!): Token!
+  findAllUserData: findAllResponseDTO!
 }
 
 type Mutation {
-  createUser(UserCreateObject: CreateUser!): UserEntity!
+  createUser(UserCreateObject: CreateUserInput!): CreateUserOutput!
 }
 
-input CreateUser {
+input CreateUserInput {
   Name: String!
   Email: String!
   Password: String!

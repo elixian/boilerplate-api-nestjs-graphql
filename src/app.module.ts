@@ -8,6 +8,7 @@ import { TypeOrmModule, } from '@nestjs/typeorm';
 
 import { TypeOrmService } from './config/typeorm/index';
 import { GraphQLConfigService } from './config/graphql';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -24,7 +25,8 @@ import { GraphQLConfigService } from './config/graphql';
       useClass: TypeOrmService,
 
     }),
-    UserModule
+    UserModule,
+    AuthModule
   ],
   providers: [],
 })

@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType, Resolver } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType, Resolver } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -11,8 +11,8 @@ import {
 @Resolver()
 @ObjectType()
 export class UserEntity {
-  @PrimaryGeneratedColumn({ comment: 'Primary generated column' })
-  @Field(() => Int)
+  @PrimaryGeneratedColumn('uuid',{comment:'Primary generated column' })
+  @Field(() => ID)
   ID: number;
 
   @CreateDateColumn({ comment: 'automated date created column' })

@@ -1,9 +1,9 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType, ID } from '@nestjs/graphql';
 import { JWTMiddlewareDTO } from './middle-ware';
 
 @ObjectType()
 export class FindAllUserData {
-  @Field(() => Int)
+  @Field(() => ID)
   ID: number;
 
   @Field()
