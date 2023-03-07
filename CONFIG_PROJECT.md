@@ -2,12 +2,68 @@
 
 ## Gestion du versionning
 
+### [release-it]()
+
+```bash
+yar add relase-it -D
+```
+
+then add config file ```.release-it.json```
+
+```json
+{
+  "git":{
+    "requireBranch":"main",
+    "commitMessage":"chore: release v${version}"
+
+  },
+  "hooks":{
+    "before:init": ["git pull", "yarn lint"],
+    "after:bump": ["npx auto-changelog -p"]
+
+  }
+}
+```
+
 ### [Commitlint](https://github.com/conventional-changelog/commitlint)
 
 ```bash
 yarn add @commitlint/cli -D
 yarn add @commitlint/config-conventional -D
 ```
+
+then add config file ```.commitlintrc.json```
+
+```json
+{
+    "extends": ["@commitlint/config-angular"],
+    "rules": {
+      "subject-case": [
+        2,
+        "always",
+        ["sentence-case", "start-case", "pascal-case", "upper-case", "lower-case"]
+      ],
+      "type-enum": [
+        2,
+        "always",
+        [
+          "build",
+          "chore",
+          "ci",
+          "docs",
+          "feat",
+          "fix",
+          "perf",
+          "refactor",
+          "revert",
+          "lint",
+          "test",
+          "example"
+        ]
+      ]
+    }
+  }
+  ```
 
 ## [commitizen](https://commitizen.github.io/cz-cli/)
 ```bash
