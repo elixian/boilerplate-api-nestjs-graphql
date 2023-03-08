@@ -26,20 +26,20 @@ export class UserService {
 
   // user register functionality
   async createUser(createObj: CreateUserInput): Promise<CreateUserOutput> {
-    const { Name, Email, Password } = createObj;
-    const lowerEmail = Email.toLowerCase();
+    const { name, email, password } = createObj;
+    const lowerEmail = email.toLowerCase();
     const findOneData = await this.userRepository.findOne({
-      where: { Email: lowerEmail },
-      select: ['Email'],
+      where: { email: lowerEmail },
+      select: ['email'],
     });
-    if (findOneData && findOneData.Email) {
+    if (findOneData && findOneData.email) {
       throw new BadRequestException(constant.USER_ALREADY_EXIST);
     }
-    const hashPasswordValue = await hashPassword(Password);
+    // const hashPasswordValue = await hashPassword(Password);
     const dataObject: CreateUserInput = {
-      Name,
-      Email: lowerEmail,
-      Password: hashPasswordValue,
+      name,
+      email: lowerEmail,
+      password
     };
     const createUserQuery = this.userRepository.create(dataObject);
     const saveUserData = await this.userRepository.save(createUserQuery);
@@ -51,24 +51,24 @@ export class UserService {
     const lowerEmail = Email.toLowerCase();
     const findUserData = await this.userRepository.findOne({
       where: {
-        Email: lowerEmail,
+        email: lowerEmail,
       },
-      select: ['ID', 'Email', 'Name', 'Password'],
+      select: ['ID', 'email', 'name', 'password'],
     });
     if (!findUserData) {
       throw new NotFoundException(constant.EMAIL_NOT_FOUND);
     }
     const IsValidPassword = await comparePassword(
       Password,
-      findUserData.Password,
+      findUserData.password,
     );
     if (!IsValidPassword) {
       throw new BadGatewayException(constant.PROVIDED_WRONG_PASSWORD);
     }
     const payloadObject: IGenerateToken = {
       ID: findUserData.ID,
-      Name: findUserData.Name,
-      Email: findUserData.Email,
+      Name: findUserData.name,
+      Email: findUserData.email,
     };
     const getToken = generateToken(payloadObject);
     return { Token: `Bearer ${getToken}` };
@@ -76,11 +76,11 @@ export class UserService {
 
  async findAllUserData(): Promise<FindAllUserData[]> {
     return this.userRepository.find({
-      select: ['ID', 'Name', 'Email'],
+      select: ['ID', 'name', 'email'],
     });
   }
 
   async getUser(email : string ): Promise<UserEntity>{
-    return this.userRepository.findOneBy({Email :email});
+    return this.userRepository.findOneBy({email :email});
   }
 }

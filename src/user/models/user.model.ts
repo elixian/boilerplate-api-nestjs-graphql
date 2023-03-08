@@ -11,27 +11,27 @@ import {
 @Resolver()
 @ObjectType()
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid',{comment:'Primary generated column' })
+  @PrimaryGeneratedColumn('uuid')
   @Field(() => ID)
   ID: number;
 
-  @CreateDateColumn({ comment: 'automated date created column' })
+  @CreateDateColumn()
   @Field(() => Date)
-  DateCreated: Date;
+  dateCreated: Date;
 
-  @UpdateDateColumn({ comment: 'automated date updated column' })
+  @UpdateDateColumn()
   @Field(() => Date)
-  DateUpdated: Date;
+  dateUpdated: Date;
 
   @Column({ comment: 'User email address', nullable: false })
   @Field()
-  Name: string;
+  name: string;
 
   @Column({ comment: 'User email address', unique: true, nullable: false })
   @Field()
-  Email: string;
+  email: string;
 
   @Column({ comment: 'User email address', type: 'text', nullable: false })
   @Field()
-  Password: string;
+  password: string;
 }

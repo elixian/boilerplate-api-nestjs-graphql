@@ -3,8 +3,8 @@
 # ------------------------------------------------------
 
 type CreateUserOutput {
-  Name: String!
-  Email: String!
+  name: String!
+  email: String!
 }
 
 type JWTMiddlewareDTO {
@@ -15,8 +15,8 @@ type JWTMiddlewareDTO {
 
 type FindAllUserData {
   ID: ID!
-  Name: String!
-  Email: String!
+  name: String!
+  email: String!
 }
 
 type findAllResponseDTO {
@@ -28,6 +28,10 @@ type Token {
   Token: String!
 }
 
+type AuthLoginOutPut {
+  accessToken: String!
+}
+
 type Query {
   userLogin(Email: String!, Password: String!): Token!
   findAllUserData: findAllResponseDTO!
@@ -35,10 +39,11 @@ type Query {
 
 type Mutation {
   createUser(UserCreateObject: CreateUserInput!): CreateUserOutput!
+  authLogin(email: String!, password: String!): AuthLoginOutPut!
 }
 
 input CreateUserInput {
-  Name: String!
-  Email: String!
-  Password: String!
+  name: String!
+  email: String!
+  password: String!
 }

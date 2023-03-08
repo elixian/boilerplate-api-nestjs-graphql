@@ -7,10 +7,10 @@ export class FindAllUserData {
   ID: number;
 
   @Field()
-  Name: string;
+  name: string;
 
   @Field()
-  Email: string;
+  email: string;
 }
 
 @ObjectType()
