@@ -1,17 +1,17 @@
 version: '3'
 services:
 
-  api-prod:
-      container_name: nestjs_api_prod
-      image: nestjs-api-prod:1.0.0
-      build: .
-      env_file:
-        - .env
-      ports:
-        - 3001:3001
-      depends_on:
-        - postgres
-      restart: unless-stopped
+  # api-prod:
+  #     container_name: nestjs_api_prod
+  #     image: nestjs-api-prod:1.0.0
+  #     build: .
+  #     env_file:
+  #       - .env
+  #     ports:
+  #       - 3001:3001
+  #     depends_on:
+  #       - postgres
+  #     restart: unless-stopped
 
 
   postgres:
