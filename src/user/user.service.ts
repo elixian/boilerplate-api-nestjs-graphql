@@ -13,9 +13,9 @@ import {
 import {
   comparePassword,
   generateToken,
-  hashPassword,
   IGenerateToken,
 } from 'src/common/helper';
+
 
 @Injectable()
 export class UserService {
@@ -75,6 +75,7 @@ export class UserService {
   }
 
  async findAllUserData(): Promise<FindAllUserData[]> {
+
     return this.userRepository.find({
       select: ['ID', 'name', 'email'],
     });

@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query, Context, ID } from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 import { UserEntity } from 'src/user/models/user.model';
 import { CreateUserInput, CreateUserOutput } from './dto/createUser';
 import { findAllResponseDTO, FindAllUserData } from './dto/findAllResponseDTO';
@@ -42,13 +43,17 @@ export class UserResolver {
   // }
 
   @Query(() => findAllResponseDTO)
-  async findAllUserData(): Promise<{
+  @UseGuards(JwtAuthGuard)
+  async findAllUserData(
+    @Context() context
+  ): Promise<{
     AllUserData: FindAllUserData[];
   }> {
+    console.log("🚀 ~ file: user.service.ts:81 ~ UserService ~ context:", context.ID)
     const data = {
       AllUserData: await this.userService.findAllUserData(),
     };
-    console.log("🚀 ~ file: user.resolver.ts:51 ~ UserResolver ~ findAllUserData ~ data:", data)
+
     return data;
   }
 
